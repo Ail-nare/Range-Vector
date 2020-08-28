@@ -33,43 +33,49 @@
 #include <stdexcept>
 #include <array>
 
+#if __cplusplus < 201703L // if version < C++17
+class [[maybe_unused]] _range_optional_CXX14 {
+    ptrdiff_t _value=0;
+    bool _has_value=false;
 
-#if __cplusplus < 201703L // if version >= C++17
-namespace {
-    class [[maybe_unused]] _range_optional_CXX14 {
-        ptrdiff_t _value=0;
-        bool _has_value=false;
+public:
+    [[maybe_unused]] constexpr _range_optional_CXX14()=default;
+    [[maybe_unused]] constexpr _range_optional_CXX14(ptrdiff_t value)
+        : _value(value), _has_value(true)
+    {};
 
-    public:
-        [[maybe_unused]] constexpr _range_optional_CXX14()=default;
-        [[maybe_unused]] constexpr _range_optional_CXX14(ptrdiff_t value)
-            : _value(value), _has_value(true)
-        {};
+    [[maybe_unused]] [[nodiscard]] constexpr bool has_value() const
+    {
+        return this->_has_value;
+    }
 
-        [[maybe_unused]] [[nodiscard]] constexpr bool has_value() const
-        {
-            return this->_has_value;
-        }
-
-        [[maybe_unused]] [[nodiscard]] constexpr ptrdiff_t value() const
-        {
-            return this->_value;
-        }
-    };
-}
+    [[maybe_unused]] [[nodiscard]] constexpr ptrdiff_t value() const
+    {
+        return this->_value;
+    }
+};
 
 template <typename container>
-constexpr auto _range_size_CXX14(const container& c) -> decltype(c.size());
+constexpr auto _range_size_CXX14(const container& c) -> decltype(c.size())
+{
+    return c.size();
+}
 
 template <typename T, size_t n>
-constexpr size_t _range_size_CXX14(const T (&array)[n]) noexcept;
+constexpr size_t _range_size_CXX14(const T (&array)[n]) noexcept
+{
+    return n;
+}
 
-#define RANGE_GET_SIZE(x) _range_size_CXX14(x)
-#else
+ #define RANGE_GET_SIZE(x) _range_size_CXX14(x)
+
+#else // if version >= C++17
+
 #include <optional>
-
 #define RANGE_GET_SIZE(x) std::size(x)
+
 #endif
+
 
 template <typename container_type, typename std::enable_if<
     std::is_same<
