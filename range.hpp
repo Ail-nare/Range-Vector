@@ -31,6 +31,7 @@
 
 #include <iterator>
 #include <stdexcept>
+#include <array>
 
 
 #if __cplusplus < 201703L // if version >= C++17
