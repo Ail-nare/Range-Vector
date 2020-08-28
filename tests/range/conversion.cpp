@@ -64,6 +64,7 @@ TEST(range_conversion, from_iterator)
     EXPECT_EQ("{1, 2, 3, 4, 5, 6, 7}", Tests::str(range1));
 }
 
+
 TEST(range_conversion, to)
 {
     // Use of the small overload on the constructor
@@ -93,7 +94,8 @@ TEST(range_conversion, to)
             }
         };
         auto stack = range1.to<my_stack>();
-        range range_inv = range1.reverse();
+        std::vector vector1 {'1', '2', '3', '4', '5', '6', '7'};
+        range range_inv = range(vector1).reverse();
 
         for (; range_inv.size(); range_inv = range_inv(1), stack.pop())
             EXPECT_EQ(range_inv[0], stack.top());
