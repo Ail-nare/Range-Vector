@@ -34,13 +34,13 @@
 #include <array>
 
 #if __cplusplus < 201703L // if version < C++17
-class [[maybe_unused]] _range_optional_CXX14 {
+class [[maybe_unused]] CXX14_range_optional {
     ptrdiff_t _value=0;
     bool _has_value=false;
 
 public:
-    [[maybe_unused]] constexpr _range_optional_CXX14()=default;
-    [[maybe_unused]] constexpr _range_optional_CXX14(ptrdiff_t value)
+    [[maybe_unused]] constexpr CXX14_range_optional()=default;
+    [[maybe_unused]] constexpr CXX14_range_optional(ptrdiff_t value)
         : _value(value), _has_value(true)
     {};
 
@@ -56,18 +56,18 @@ public:
 };
 
 template <typename container>
-constexpr auto _range_size_CXX14(const container& c) -> decltype(c.size())
+constexpr auto CXX14_range_size(const container& c) -> decltype(c.size())
 {
     return c.size();
 }
 
 template <typename T, size_t n>
-constexpr size_t _range_size_CXX14(const T (&array)[n]) noexcept
+constexpr size_t CXX14_range_size(const T (&array)[n]) noexcept
 {
     return n;
 }
 
- #define RANGE_GET_SIZE(x) _range_size_CXX14(x)
+ #define RANGE_GET_SIZE(x) CXX14_range_size(x)
 
 #else // if version >= C++17
 
@@ -83,7 +83,7 @@ template <typename container_type, typename std::enable_if<
         std::random_access_iterator_tag>::value,
     int
 >::type=0>
-class range {
+class [[nodiscard]] range {
 public:
     typedef typename std::remove_reference<decltype(*std::begin(std::declval<container_type&>()))>::type value_type;
 protected:
@@ -102,13 +102,13 @@ protected:
 #if __cplusplus >= 201703L // if version >= C++17
     typedef std::optional<ptrdiff_t> opt_difference_type;
 #else // else version < C++17
-    typedef _range_optional_CXX14 opt_difference_type;
+    typedef CXX14_range_optional opt_difference_type;
 #endif
 
 public:
     class iterator : public std::iterator<std::random_access_iterator_tag, value_type> {
         iterator_type _it;
-        ptrdiff_t _step;
+        ptrdiff_t _step{};
 
     public:
         [[maybe_unused]] constexpr iterator(iterator_type it, ptrdiff_t step)
@@ -205,12 +205,12 @@ public:
         }
 
 
-        [[maybe_unused]] [[nodiscard]] constexpr inline auto operator[](ptrdiff_t n)
+        [[maybe_unused]] [[nodiscard]] constexpr inline decltype(auto) operator[](ptrdiff_t n)
         {
             return *(*this + n);
         }
 
-        [[maybe_unused]] [[nodiscard]] constexpr inline auto operator[](ptrdiff_t n) const
+        [[maybe_unused]] [[nodiscard]] constexpr inline decltype(auto) operator[](ptrdiff_t n) const
         {
             return *(*this + n);
         }
