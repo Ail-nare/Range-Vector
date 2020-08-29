@@ -40,18 +40,25 @@ set(PATH_INCLUDES
 )
 
 set(SOURCE_TEST
-    ./range/one_args.cpp
-    ./range/two_args.cpp
-    ./range/three_args.cpp
-    ./range/multiple.cpp
-    ./range/conversion.cpp
-    ./range/const_n_reverse_iterator.cpp
-    ./range/constexpr.cpp
+    range/one_args.cpp
+    range/two_args.cpp
+    range/three_args.cpp
+    range/multiple.cpp
+    range/conversion.cpp
+    range/const_n_reverse_iterator.cpp
+    range/constexpr.cpp
 
-    ./range/iterator/operator.cpp
+    range/iterator/operator.cpp
 
-    ./vector/operator.cpp
-    ./vector/constructor.cpp
+    vector/operator.cpp
+    vector/constructor.cpp
+
+    xrange/one_args.cpp
+    xrange/two_args.cpp
+    xrange/three_args.cpp
+    xrange/const_n_reverse_iterator.cpp
+
+    xrange/iterator/operator.cpp
 )
 
 include_directories(${PATH_INCLUDES})

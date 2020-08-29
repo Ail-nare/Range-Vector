@@ -97,12 +97,6 @@ public:
         return *this;
     }
 
-    inline vector& operator=(std::initializer_list<T> _l)
-    {
-        *static_cast<_base *>(this) = _l;
-        return *this;
-    }
-
 
     // Operator []
     [[maybe_unused]] [[nodiscard]] typename _base::reference operator[](typename std::make_signed<typename _base::size_type>::type n) noexcept
@@ -123,7 +117,7 @@ public:
 #if __cplusplus >= 201703L // if version >= C++17
     typedef std::optional<ptrdiff_t> opt_difference_type;
 #else // else version < C++17
-    typedef _range_optional_CXX14 opt_difference_type;
+    typedef CXX14_range_optional opt_difference_type;
 #endif
 
 public:
