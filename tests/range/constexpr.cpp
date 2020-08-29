@@ -177,4 +177,21 @@ TEST(range_constexpr, c_str)
     EXPECT_TRUE(std::equal(std_array.begin(), std_array.end(), r_array.begin()));
 
     EXPECT_EQ('u', CONST_EVAL(c_std_array[2]));
+
+    constexpr auto c_std_int_array = r_array.constexpr_to<std::array<int, r_array.size()>>([] (char c) constexpr -> int { return c - 'a'; });
+    EXPECT_EQ("{0, 11, 20, 18, 19}", Tests::str(c_std_int_array));
+
+    { // force run time
+        std::string str; // not const data
+
+        str = "alus";
+        str += 't';
+
+        range not_const_range(str);
+
+        not_const_range = not_const_range.reverse();
+
+        auto not_const_std_array = not_const_range.constexpr_to<std::array<char, 5>>([] (char c) mutable -> int { return c - 0x20; }); // not a constexpr to force the run time
+        EXPECT_EQ("{T, S, U, L, A}", Tests::str(not_const_std_array));
+    }
 }
